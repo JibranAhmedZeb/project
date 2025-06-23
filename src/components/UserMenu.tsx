@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { User, Settings, CreditCard, History, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
@@ -42,20 +43,32 @@ const UserMenu: React.FC = () => {
             </div>
             
             <div className="py-2">
-              <button className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
+              <Link 
+                to="/settings"
+                onClick={() => setIsOpen(false)}
+                className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+              >
                 <Settings className="w-4 h-4" />
                 <span>Settings</span>
-              </button>
+              </Link>
               
-              <button className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
+              <Link 
+                to="/history"
+                onClick={() => setIsOpen(false)}
+                className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+              >
                 <History className="w-4 h-4" />
                 <span>Request History</span>
-              </button>
+              </Link>
               
-              <button className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
+              <Link 
+                to="/billing"
+                onClick={() => setIsOpen(false)}
+                className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+              >
                 <CreditCard className="w-4 h-4" />
                 <span>Billing</span>
-              </button>
+              </Link>
               
               <hr className="my-2 border-gray-700" />
               

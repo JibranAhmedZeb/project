@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Zap, Menu, X } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';
@@ -6,6 +7,7 @@ import UserMenu from './UserMenu';
 
 const Header: React.FC = () => {
   const { user } = useAuth();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; mode: 'signin' | 'signup' }>({
     isOpen: false,
@@ -20,25 +22,50 @@ const Header: React.FC = () => {
     setAuthModal({ isOpen: false, mode: 'signin' });
   };
 
+  const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'Playground', href: '/playground' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Docs', href: '/docs' },
+  ];
+
+  const userNavigation = [
+    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Playground', href: '/playground' },
+    { name: 'Workflows', href: '/workflows' },
+    { name: 'History', href: '/history' },
+  ];
+
+  const currentNav = user ? userNavigation : navigation;
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 glass-effect">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-white">AutoSummon</span>
-            </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-              <a href="#demo" className="text-gray-300 hover:text-white transition-colors">Demo</a>
-              <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a>
-              <a href="#docs" className="text-gray-300 hover:text-white transition-colors">Docs</a>
+              {currentNav.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`transition-colors ${
+                    location.pathname === item.href
+                      ? 'text-primary-400'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
               
               {user ? (
                 <UserMenu />
@@ -73,10 +100,20 @@ const Header: React.FC = () => {
           {isMenuOpen && (
             <div className="md:hidden absolute top-16 left-0 right-0 glass-effect border-t border-gray-700">
               <nav className="flex flex-col space-y-4 p-4">
-                <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-                <a href="#demo" className="text-gray-300 hover:text-white transition-colors">Demo</a>
-                <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a>
-                <a href="#docs" className="text-gray-300 hover:text-white transition-colors">Docs</a>
+                {currentNav.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`transition-colors ${
+                      location.pathname === item.href
+                        ? 'text-primary-400'
+                        : 'text-gray-300 hover:text-white'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
                 
                 {user ? (
                   <UserMenu />

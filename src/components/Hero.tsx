@@ -1,7 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Play, ArrowRight, Sparkles } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 const Hero: React.FC = () => {
+  const { user } = useAuth();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
@@ -36,10 +40,13 @@ const Hero: React.FC = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          <button className="group gradient-bg text-white px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90 transition-all duration-300 flex items-center space-x-2 hover-lift">
-            <span>Try It Free</span>
+          <Link 
+            to={user ? "/playground" : "/"}
+            className="group gradient-bg text-white px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90 transition-all duration-300 flex items-center space-x-2 hover-lift"
+          >
+            <span>{user ? 'Go to Playground' : 'Try It Free'}</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </Link>
           <button className="group bg-white/10 backdrop-blur text-white border border-white/20 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/20 transition-all duration-300 flex items-center space-x-2">
             <Play className="w-5 h-5" />
             <span>Watch Demo</span>
